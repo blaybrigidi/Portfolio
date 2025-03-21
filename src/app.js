@@ -1,22 +1,17 @@
-import express from 'express';
-import path from 'path';
-import dotenv from 'dotenv';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import morgan from 'morgan';
-import { fileURLToPath } from 'url';
-import { sequelize, connectDB } from './config/db.js';
-import Project from './models/Project.js';
+const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
+const { sequelize, connectDB } = require('./config/db');
+const Project = require('./models/Project');
 
 // Import routes
-import projectRoutes from './routes/projectRoutes.js';
+const projectRoutes = require('./routes/projectRoutes');
 
 // Load environment variables
 dotenv.config();
-
-// Get __dirname equivalent in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Initialize Express app
 const app = express();
