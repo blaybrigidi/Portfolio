@@ -31,7 +31,16 @@ export const getProject = async (req, res) => {
 // Create new project
 export const createProject = async (req, res) => {
   try {
-    const response = await projectService.createNewProject(req.body);
+    const projectData = { ...req.body };
+    
+    // If technologies is a string, convert it to array
+    if (typeof projectData.technologies === 'string') {
+      projectData.technologies = projectData.technologies.split(',').map(tech => tech.trim());
+    }
+    
+    // imageUrl is expected to be provided directly in the request body
+    
+    const response = await projectService.createNewProject(projectData);
     return res.status(response.status).send(response);
   } catch (error) {
     return res.status(400).send({
@@ -45,7 +54,16 @@ export const createProject = async (req, res) => {
 // Update project
 export const updateProject = async (req, res) => {
   try {
-    const response = await projectService.updateProjectById(req.params.id, req.body);
+    const projectData = { ...req.body };
+    
+    // If technologies is a string, convert it to array
+    if (typeof projectData.technologies === 'string') {
+      projectData.technologies = projectData.technologies.split(',').map(tech => tech.trim());
+    }
+    
+    // imageUrl is expected to be provided directly in the request body
+    
+    const response = await projectService.updateProjectById(req.params.id, projectData);
     return res.status(response.status).send(response);
   } catch (error) {
     return res.status(400).send({
@@ -59,7 +77,8 @@ export const updateProject = async (req, res) => {
 // Delete project
 export const deleteProject = async (req, res) => {
   try {
-    const response = await projectService.deleteProjectById(req.params.id);
+    const projectId = req.params.id;
+    const response = await projectService.deleteProjectById(projectId);
     return res.status(response.status).send(response);
   } catch (error) {
     return res.status(500).send({

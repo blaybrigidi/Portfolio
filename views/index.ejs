@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= title %></title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
   <header>
@@ -17,6 +18,7 @@
           <li><a href="#home">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#projects">Projects</a></li>
+          <li><a href="#job-fit">Job Fit</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </div>
@@ -30,7 +32,15 @@
         <div class="dynamic-text-container">
           <p>I am a <span id="dynamic-text" class="highlight"></span><span class="cursor">|</span></p>
         </div>
-        <a href="#contact" class="btn">Contact Me</a>
+        <div class="hero-buttons">
+          <a href="/resume.pdf" class="btn btn-primary" target="_blank"><i class="fas fa-file-pdf"></i> Download Resume</a>
+          <a href="#contact" class="btn btn-secondary">Contact Me</a>
+        </div>
+        <div class="social-links">
+          <a href="https://github.com/blaybrigidi" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/brigidi-blay-574906274/" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+          <a href="mailto:youremail@example.com" aria-label="Email Me"><i class="fas fa-envelope"></i></a>
+        </div>
       </div>
     </section>
     
@@ -46,6 +56,123 @@
         <h2>My Projects</h2>
         <div class="project-grid">
           <!-- Projects will be loaded here -->
+        </div>
+      </div>
+    </section>
+    
+    <section id="job-fit" class="job-fit">
+      <div class="container">
+        <h2>Job Fit Analysis</h2>
+        <p class="section-description">Let's see how well my skills match that job you're considering me for!</p>
+        
+        <div class="job-fit-wizard">
+          <!-- Progress tracker -->
+          <div class="wizard-progress">
+            <div class="progress-step active" data-step="1">
+              <div class="step-number">1</div>
+              <div class="step-label">Job Description</div>
+            </div>
+            <div class="progress-bar"></div>
+            <div class="progress-step" data-step="2">
+              <div class="step-number">2</div>
+              <div class="step-label">Analysis</div>
+            </div>
+            <div class="progress-bar"></div>
+            <div class="progress-step" data-step="3">
+              <div class="step-number">3</div>
+              <div class="step-label">Results</div>
+            </div>
+          </div>
+          
+          <!-- Step 1: Job Description Entry -->
+          <div class="wizard-step active" id="step1">
+            <div class="step-content">
+              <h3>Enter Job Description</h3>
+              <p>Paste a job description below and I'll analyze how well my skills match the requirements.</p>
+              <form id="jobAnalysisForm">
+                <div class="form-group">
+                  <textarea id="jobDescription" name="jobDescription" rows="10" placeholder="Paste the job description here..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Analyze My Fit <i class="fas fa-arrow-right"></i></button>
+              </form>
+            </div>
+          </div>
+          
+          <!-- Step 2: Analysis Animation -->
+          <div class="wizard-step" id="step2">
+            <div class="step-content analysis-animation">
+              <div class="analysis-progress">
+                <div class="brain-animation">
+                  <i class="fas fa-brain"></i>
+                </div>
+                <h3>Analyzing Job Requirements...</h3>
+                <div class="progress-container">
+                  <div class="progress-bar-animated"></div>
+                </div>
+                <div class="analysis-status">
+                  <p id="analysisStatus">Extracting key skills from job description...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 3: Results Display -->
+          <div class="wizard-step" id="step3">
+            <div class="step-content">
+              <div class="results-header">
+                <h3>Analysis Complete!</h3>
+                <button id="restartAnalysis" class="btn btn-secondary"><i class="fas fa-redo"></i> Analyze Another Job</button>
+              </div>
+              
+              <div class="results-container">
+                <div class="match-meter">
+                  <div class="meter-label">Match Score</div>
+                  <div class="meter-visual">
+                    <div class="meter-circle">
+                      <div class="meter-value" id="fitScoreValue">0</div>
+                      <div class="meter-unit">%</div>
+                    </div>
+                    <div class="meter-arc">
+                      <svg viewBox="0 0 120 120" class="meter-svg">
+                        <path id="meter-path" class="meter-path" d="M10,60 A50,50 0 1,1 110,60" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="results-details">
+                  <div class="result-summary">
+                    <h4>Analysis Summary</h4>
+                    <p id="fitAnalysis"></p>
+                  </div>
+                  
+                  <div class="skills-analysis">
+                    <div class="matching-skills-card">
+                      <div class="card-header">
+                        <h4><i class="fas fa-check-circle"></i> Matching Skills</h4>
+                      </div>
+                      <div class="skills-list">
+                        <ul id="matchingSkills"></ul>
+                      </div>
+                    </div>
+                    
+                    <div class="missing-skills-card">
+                      <div class="card-header">
+                        <h4><i class="fas fa-graduation-cap"></i> Skills to Develop</h4>
+                      </div>
+                      <div class="skills-list">
+                        <ul id="missingSkills"></ul>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="skill-badges" id="skillBadges">
+                    <!-- Skill badges will be added here dynamically -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

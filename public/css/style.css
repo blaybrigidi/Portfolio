@@ -106,10 +106,40 @@ nav .container {
   border-radius: 5px;
   font-weight: 500;
   transition: all 0.3s ease;
+  margin: 0 10px;
 }
 
 .btn:hover {
   background-color: #3a57d7;
+  transform: translateY(-3px);
+}
+
+.btn-primary {
+  background-color: #4a6cf7;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+}
+
+.hero-buttons {
+  margin: 25px 0;
+}
+
+.social-links {
+  margin-top: 20px;
+}
+
+.social-links a {
+  display: inline-block;
+  margin: 0 15px;
+  font-size: 1.5rem;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #4a6cf7;
   transform: translateY(-3px);
 }
 
@@ -220,6 +250,18 @@ section h2::after {
   margin-right: 15px;
   color: #4a6cf7;
   font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.project-links a i {
+  margin-right: 5px;
+}
+
+.project-links a:hover {
+  color: #3a57d7;
+  transform: translateY(-2px);
 }
 
 /* Contact section */
@@ -312,5 +354,627 @@ footer {
   }
   50% {
     opacity: 0;
+  }
+}
+
+/* Job Fit Analysis section */
+.job-fit {
+  background-color: #f8f9fa;
+  padding: 80px 0;
+}
+
+.section-description {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 40px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Wizard Layout */
+.job-fit-wizard {
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Progress Tracker */
+.wizard-progress {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto 50px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e0e0e0;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+}
+
+.step-label {
+  font-size: 0.9rem;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-number {
+  background-color: #4a6cf7;
+  color: white;
+  transform: scale(1.1);
+}
+
+.progress-step.active .step-label {
+  color: #4a6cf7;
+  font-weight: 600;
+}
+
+.progress-step.completed .step-number {
+  background-color: #28a745;
+  color: white;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 3px;
+  background-color: #e0e0e0;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar.completed {
+  background-color: #28a745;
+}
+
+/* Wizard Steps */
+.wizard-step {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.wizard-step.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-content {
+  background-color: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.step-content h3 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Step 1: Job Description */
+#jobDescription {
+  width: 100%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  margin-bottom: 20px;
+}
+
+#jobDescription:focus {
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+  outline: none;
+}
+
+/* Step 2: Analysis Animation */
+.analysis-animation {
+  text-align: center;
+  padding: 50px 30px;
+}
+
+.analysis-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.brain-animation {
+  font-size: 5rem;
+  color: #4a6cf7;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.progress-container {
+  width: 80%;
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  margin: 30px 0;
+  overflow: hidden;
+}
+
+.progress-bar-animated {
+  height: 100%;
+  width: 30%;
+  background-color: #4a6cf7;
+  border-radius: 10px;
+  animation: progressMove 2s infinite;
+}
+
+@keyframes progressMove {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+.analysis-status {
+  font-style: italic;
+  color: #666;
+}
+
+/* Step 3: Results Display */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.results-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Match Meter */
+.match-meter {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.meter-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.meter-visual {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+.meter-circle {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  top: 15px;
+  left: 15px;
+  background: linear-gradient(135deg, #4a6cf7, #6a4cf7);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 10px rgba(74, 108, 247, 0.3);
+}
+
+.meter-value {
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.meter-unit {
+  font-size: 1.2rem;
+}
+
+.meter-arc {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.meter-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.meter-path {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 8;
+  stroke-linecap: round;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Results Details */
+.results-details {
+  margin-top: 10px;
+}
+
+.result-summary {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.result-summary h4 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.skills-analysis {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.matching-skills-card, .missing-skills-card {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.card-header h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.card-header h4 i {
+  font-size: 1.2rem;
+}
+
+.matching-skills-card .card-header {
+  background-color: rgba(40, 167, 69, 0.1);
+}
+
+.matching-skills-card .card-header h4 i {
+  color: #28a745;
+}
+
+.missing-skills-card .card-header {
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.missing-skills-card .card-header h4 i {
+  color: #dc3545;
+}
+
+.skills-list {
+  padding: 15px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.skills-list ul {
+  padding-left: 10px;
+}
+
+.skills-list li {
+  margin-bottom: 10px;
+  padding-left: 10px;
+  position: relative;
+}
+
+.skills-list li::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+#matchingSkills li::before {
+  background-color: #28a745;
+}
+
+#missingSkills li::before {
+  background-color: #dc3545;
+}
+
+/* Skill Badges */
+.skill-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.skill-badge {
+  background-color: #f0f5ff;
+  color: #4a6cf7;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.skill-badge:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.skill-badge.expert {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: #28a745;
+}
+
+.skill-badge.intermediate {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.skill-badge i {
+  font-size: 1rem;
+}
+
+/* Additional Job Fit Wizard Animations */
+.skill-badge {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+}
+
+/* Animate the step numbers on hover */
+.progress-step:hover .step-number {
+  transform: scale(1.15) rotate(5deg);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Path animation for the match meter */
+.meter-path {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 8;
+  stroke-linecap: round;
+  filter: drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+/* Brain animation in analysis step */
+.brain-animation i {
+  display: inline-block;
+  animation: pulse 2s infinite, float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+/* Glow effect for high match scores */
+.meter-circle[data-score="high"] {
+  box-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(40, 167, 69, 0.8);
+  }
+}
+
+/* Confetti animation for high scores */
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #4a6cf7;
+  opacity: 0.8;
+  border-radius: 0;
+  animation: confetti-fall 4s ease-out forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(100vh - 100px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Progress step completion animation */
+.progress-step.completed .step-number::after {
+  content: '✓';
+  position: absolute;
+  font-size: 1.2rem;
+  animation: checkmark 0.5s ease-in-out forwards;
+}
+
+@keyframes checkmark {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Skill list animations */
+#matchingSkills li, #missingSkills li {
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: slideIn 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Stagger the animations for skills lists */
+#matchingSkills li:nth-child(1) { animation-delay: 0.1s; }
+#matchingSkills li:nth-child(2) { animation-delay: 0.2s; }
+#matchingSkills li:nth-child(3) { animation-delay: 0.3s; }
+#matchingSkills li:nth-child(4) { animation-delay: 0.4s; }
+#matchingSkills li:nth-child(5) { animation-delay: 0.5s; }
+
+#missingSkills li:nth-child(1) { animation-delay: 0.6s; }
+#missingSkills li:nth-child(2) { animation-delay: 0.7s; }
+#missingSkills li:nth-child(3) { animation-delay: 0.8s; }
+#missingSkills li:nth-child(4) { animation-delay: 0.9s; }
+#missingSkills li:nth-child(5) { animation-delay: 1.0s; }
+
+/* Progress bar transition in the wizard */
+.progress-bar.completed {
+  background-color: #28a745;
+  transition: background-color 0.5s ease;
+}
+
+/* Restart button animation */
+#restartAnalysis {
+  transition: all 0.3s ease;
+}
+
+#restartAnalysis:hover {
+  transform: translateY(-3px) rotate(-2deg);
+}
+
+#restartAnalysis:hover i {
+  animation: spin 1s ease;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .wizard-progress {
+    max-width: 100%;
+  }
+  
+  .step-label {
+    font-size: 0.8rem;
+  }
+  
+  .skills-analysis {
+    flex-direction: column;
+  }
+  
+  .results-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .meter-visual {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .meter-circle {
+    width: 90px;
+    height: 90px;
+    top: 15px;
+    left: 15px;
   }
 } 
