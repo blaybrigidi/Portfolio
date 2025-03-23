@@ -117,6 +117,7 @@ async function fetchProjects() {
     console.log('Response status:', response.status);
     const result = await response.json();
     console.log('API response:', result);
+    console.log('Full API data:', JSON.stringify(result.data));
     
     if (result.status === 200 && result.data && result.data.length > 0) {
       console.log('Displaying', result.data.length, 'projects');
@@ -140,8 +141,15 @@ function displayProjects(projects) {
     const projectCard = document.createElement('div');
     projectCard.classList.add('project-card');
     
-    const techHtml = project.technologies
-      .map(tech => `<span>${tech}</span>`)
+    // Make sure technologies is treated as an array
+    const technologies = Array.isArray(project.technologies) 
+      ? project.technologies 
+      : (typeof project.technologies === 'string' 
+          ? project.technologies.split(',') 
+          : []);
+    
+    const techHtml = technologies
+      .map(tech => `<span>${tech.trim()}</span>`)
       .join('');
     
     projectCard.innerHTML = `

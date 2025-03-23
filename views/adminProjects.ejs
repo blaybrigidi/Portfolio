@@ -22,9 +22,14 @@
     <main class="admin-main">
       <div class="admin-header-actions">
         <h2>All Projects</h2>
-        <a href="/admin" class="btn btn-primary">
-          <i class="fas fa-plus"></i> Add New Project
-        </a>
+        <div class="header-buttons">
+          <a href="/admin" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add New Project
+          </a>
+          <button id="resetProjects" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Reset All Projects
+          </button>
+        </div>
       </div>
       
       <div class="projects-table-container">
@@ -56,6 +61,19 @@
           </div>
         </div>
       </div>
+      
+      <!-- Reset All Projects Confirmation Modal -->
+      <div id="resetModal" class="modal">
+        <div class="modal-content">
+          <h3>Reset All Projects</h3>
+          <p>Are you sure you want to delete ALL projects?</p>
+          <p class="modal-warning">This action cannot be undone. All projects will be permanently removed.</p>
+          <div class="modal-actions">
+            <button id="cancelReset" class="btn btn-secondary">Cancel</button>
+            <button id="confirmReset" class="btn btn-danger">Reset All</button>
+          </div>
+        </div>
+      </div>
     </main>
   </div>
   
@@ -65,21 +83,37 @@
       fetchProjects();
       
       // Modal setup
-      const modal = document.getElementById('deleteModal');
-      const cancelBtn = document.getElementById('cancelDelete');
+      const deleteModal = document.getElementById('deleteModal');
+      const cancelDeleteBtn = document.getElementById('cancelDelete');
+      const resetModal = document.getElementById('resetModal');
+      const cancelResetBtn = document.getElementById('cancelReset');
+      const resetBtn = document.getElementById('resetProjects');
       let projectToDelete = null;
       
-      // Close modal when cancel is clicked
-      cancelBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
+      // Reset button event
+      resetBtn.addEventListener('click', () => {
+        resetModal.style.display = 'block';
+      });
+      
+      // Close delete modal when cancel is clicked
+      cancelDeleteBtn.addEventListener('click', () => {
+        deleteModal.style.display = 'none';
         projectToDelete = null;
       });
       
-      // Close modal when clicking outside of it
+      // Close reset modal when cancel is clicked
+      cancelResetBtn.addEventListener('click', () => {
+        resetModal.style.display = 'none';
+      });
+      
+      // Close modals when clicking outside of them
       window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-          modal.style.display = 'none';
+        if (event.target === deleteModal) {
+          deleteModal.style.display = 'none';
           projectToDelete = null;
+        }
+        if (event.target === resetModal) {
+          resetModal.style.display = 'none';
         }
       });
       
@@ -87,10 +121,42 @@
       document.getElementById('confirmDelete').addEventListener('click', async () => {
         if (projectToDelete) {
           await deleteProject(projectToDelete);
-          modal.style.display = 'none';
+          deleteModal.style.display = 'none';
           projectToDelete = null;
         }
       });
+      
+      // Confirm reset handler
+      document.getElementById('confirmReset').addEventListener('click', async () => {
+        try {
+          const projects = await fetchAllProjects();
+          if (!projects || projects.length === 0) {
+            showMessage('No projects to delete', 'info');
+            resetModal.style.display = 'none';
+            return;
+          }
+          
+          // Delete all projects one by one
+          for (const project of projects) {
+            await deleteProject(project.id);
+          }
+          
+          showMessage('All projects have been deleted', 'success');
+          resetModal.style.display = 'none';
+          fetchProjects(); // Refresh the empty list
+        } catch (error) {
+          console.error('Error resetting projects:', error);
+          showMessage('Failed to reset projects', 'error');
+          resetModal.style.display = 'none';
+        }
+      });
+      
+      // Helper function to get all projects
+      async function fetchAllProjects() {
+        const response = await fetch('/api/projects/getAllProjects');
+        const result = await response.json();
+        return result.status === 200 ? result.data : [];
+      }
       
       // Function to fetch projects
       async function fetchProjects() {
@@ -160,7 +226,7 @@
             
             projectToDelete = id;
             document.getElementById('deleteProjectName').textContent = name;
-            modal.style.display = 'block';
+            deleteModal.style.display = 'block';
           });
         });
       }
