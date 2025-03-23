@@ -1,6 +1,14 @@
-const { Sequelize } = require('sequelize');
-const path = require('path');
-require('dotenv').config();
+import { Sequelize } from 'sequelize';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Get __dirname equivalent in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -18,4 +26,4 @@ const connectDB = async () => {
   }
 };
 
-module.exports = { sequelize, connectDB }; 
+export { sequelize, connectDB }; 

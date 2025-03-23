@@ -112,10 +112,14 @@ function initTypewriter() {
 
 async function fetchProjects() {
   try {
+    console.log('Fetching projects...');
     const response = await fetch('/api/projects/getAllProjects');
+    console.log('Response status:', response.status);
     const result = await response.json();
+    console.log('API response:', result);
     
     if (result.status === 200 && result.data && result.data.length > 0) {
+      console.log('Displaying', result.data.length, 'projects');
       displayProjects(result.data);
     } else {
       console.error('No projects found or error in response:', result.msg);
