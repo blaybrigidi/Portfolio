@@ -55,6 +55,11 @@ app.get('/admin', (req, res) => {
   res.render('admin', { title: 'Admin - Add Project' });
 });
 
+// Admin route to list all projects
+app.get('/admin/projects', (req, res) => {
+  res.render('adminProjects', { title: 'Admin - All Projects' });
+});
+
 // API routes
 app.use('/api/projects', projectRoutes);
 app.use('/api/job-analysis', jobAnalysisRoutes);

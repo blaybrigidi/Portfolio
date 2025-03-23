@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load projects from API
   fetchProjects();
   
+  // Initialize the image carousel
+  initCarousel();
+  
   // Handle contact form submission
   const contactForm = document.querySelector('.contact form');
   
@@ -194,13 +197,13 @@ async function handleJobAnalysis(e) {
     'Extracting key skills from job description...',
     'Scanning for technical requirements...',
     'Identifying core competencies...',
+    'Activating Claude AI analysis...',
     'Comparing with my skill set...',
     'Finding skill matches...',
     'Identifying skill gaps...',
     'Calculating match percentage...',
-    'Evaluating experience alignment...',
-    'Generating personalized insights...',
-    'Preparing your custom report...'
+    'Generating AI insights...',
+    'Preparing your personalized report...'
   ];
   
   let messageIndex = 0;
@@ -494,4 +497,126 @@ function moveToStep(stepNumber) {
       step.classList.add('active');
     }
   });
-} 
+}
+
+// Initialize Carousel
+function initCarousel() {
+  const slides = document.querySelectorAll('.carousel-slide');
+  const indicators = document.querySelectorAll('.indicator');
+  const prevBtn = document.querySelector('.prev-btn');
+  const nextBtn = document.querySelector('.next-btn');
+  
+  if (!slides.length || !prevBtn || !nextBtn) return;
+  
+  let currentIndex = 0;
+  const maxIndex = slides.length - 1;
+  
+  // Function to update slide display
+  function updateSlide(newIndex) {
+    // Handle circular navigation
+    if (newIndex < 0) newIndex = maxIndex;
+    if (newIndex > maxIndex) newIndex = 0;
+    
+    // Update active class
+    slides.forEach(slide => slide.classList.remove('active'));
+    indicators.forEach(indicator => indicator.classList.remove('active'));
+    
+    slides[newIndex].classList.add('active');
+    indicators[newIndex].classList.add('active');
+    
+    currentIndex = newIndex;
+  }
+  
+  // Event listeners for navigation buttons
+  prevBtn.addEventListener('click', () => {
+    updateSlide(currentIndex - 1);
+    addFloatingShapes();
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    updateSlide(currentIndex + 1);
+    addFloatingShapes();
+  });
+  
+  // Event listeners for indicators
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      updateSlide(index);
+      addFloatingShapes();
+    });
+  });
+  
+  // Add some fun floating shapes during transitions
+  function addFloatingShapes() {
+    const container = document.querySelector('.carousel-container');
+    const colors = ['#4a6cf7', '#f7c04a', '#4af76f', '#f74a6c'];
+    
+    // Create 5 random shapes
+    for (let i = 0; i < 5; i++) {
+      const shape = document.createElement('div');
+      shape.classList.add('floating-shape');
+      
+      // Random styling
+      const size = Math.random() * 15 + 5;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const left = Math.random() * 100;
+      const isCircle = Math.random() > 0.5;
+      
+      // Set style
+      shape.style.width = `${size}px`;
+      shape.style.height = `${size}px`;
+      shape.style.backgroundColor = color;
+      shape.style.left = `${left}%`;
+      shape.style.top = '50%';
+      shape.style.position = 'absolute';
+      shape.style.zIndex = '0';
+      shape.style.opacity = '0.7';
+      
+      if (isCircle) {
+        shape.style.borderRadius = '50%';
+      } else {
+        shape.style.transform = `rotate(${Math.random() * 360}deg)`;
+      }
+      
+      // Animation
+      shape.style.animation = `floatAway ${Math.random() * 2 + 1}s forwards`;
+      
+      // Add to container
+      container.appendChild(shape);
+      
+      // Remove after animation
+      setTimeout(() => {
+        shape.remove();
+      }, 3000);
+    }
+  }
+  
+  // Add keydown event for arrow keys
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      updateSlide(currentIndex - 1);
+      addFloatingShapes();
+    } else if (e.key === 'ArrowRight') {
+      updateSlide(currentIndex + 1);
+      addFloatingShapes();
+    }
+  });
+}
+
+// Add floating animation keyframes
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+  @keyframes floatAway {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translate(${Math.random() > 0.5 ? '-' : ''}${Math.random() * 100 + 50}px, 
+                         ${Math.random() > 0.5 ? '-' : ''}${Math.random() * 100 + 50}px) 
+                rotate(${Math.random() * 360}deg);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(styleSheet); 

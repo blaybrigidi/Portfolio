@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <div class="admin-container">
+    <header class="admin-header">
+      <h1>Admin Dashboard</h1>
+      <nav class="admin-nav">
+        <a href="/admin" class="admin-nav-link">Add Project</a>
+        <a href="/admin/projects" class="admin-nav-link active">All Projects</a>
+        <a href="/" class="admin-nav-link">Back to Site</a>
+      </nav>
+    </header>
+    
+    <main class="admin-main">
+      <div class="admin-header-actions">
+        <h2>All Projects</h2>
+        <a href="/admin" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add New Project
+        </a>
+      </div>
+      
+      <div class="projects-table-container">
+        <table class="projects-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Featured</th>
+              <th>Technologies</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="projectsTableBody">
+            <!-- Projects will be loaded here via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Project Delete Confirmation Modal -->
+      <div id="deleteModal" class="modal">
+        <div class="modal-content">
+          <h3>Confirm Deletion</h3>
+          <p>Are you sure you want to delete the project "<span id="deleteProjectName"></span>"?</p>
+          <p class="modal-warning">This action cannot be undone.</p>
+          <div class="modal-actions">
+            <button id="cancelDelete" class="btn btn-secondary">Cancel</button>
+            <button id="confirmDelete" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load all projects
+      fetchProjects();
+      
+      // Modal setup
+      const modal = document.getElementById('deleteModal');
+      const cancelBtn = document.getElementById('cancelDelete');
+      let projectToDelete = null;
+      
+      // Close modal when cancel is clicked
+      cancelBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        projectToDelete = null;
+      });
+      
+      // Close modal when clicking outside of it
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+          projectToDelete = null;
+        }
+      });
+      
+      // Confirm delete handler
+      document.getElementById('confirmDelete').addEventListener('click', async () => {
+        if (projectToDelete) {
+          await deleteProject(projectToDelete);
+          modal.style.display = 'none';
+          projectToDelete = null;
+        }
+      });
+      
+      // Function to fetch projects
+      async function fetchProjects() {
+        try {
+          const response = await fetch('/api/projects/getAllProjects');
+          const result = await response.json();
+          
+          if (result.status === 200 && result.data) {
+            displayProjects(result.data);
+          } else {
+            showMessage('No projects found or error occurred', 'error');
+          }
+        } catch (error) {
+          console.error('Error fetching projects:', error);
+          showMessage('Failed to load projects', 'error');
+        }
+      }
+      
+      // Function to display projects in table
+      function displayProjects(projects) {
+        const tableBody = document.getElementById('projectsTableBody');
+        tableBody.innerHTML = '';
+        
+        if (projects.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="5" class="no-projects">No projects found. <a href="/admin">Add a project</a>.</td>
+            </tr>
+          `;
+          return;
+        }
+        
+        projects.forEach(project => {
+          const row = document.createElement('tr');
+          
+          // Format technologies for display
+          const technologies = project.technologies.slice(0, 3).join(', ') + 
+                             (project.technologies.length > 3 ? '...' : '');
+          
+          row.innerHTML = `
+            <td>${project.id}</td>
+            <td>${project.title}</td>
+            <td>
+              <span class="featured-badge ${project.featured ? 'is-featured' : ''}">
+                ${project.featured ? 'Featured' : 'No'}
+              </span>
+            </td>
+            <td>${technologies}</td>
+            <td class="actions-cell">
+              <a href="/admin/edit/${project.id}" class="action-btn edit-btn" title="Edit Project">
+                <i class="fas fa-edit"></i>
+              </a>
+              <button class="action-btn delete-btn" data-id="${project.id}" data-name="${project.title}" title="Delete Project">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </td>
+          `;
+          
+          tableBody.appendChild(row);
+        });
+        
+        // Add event listeners to delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            const name = e.currentTarget.getAttribute('data-name');
+            
+            projectToDelete = id;
+            document.getElementById('deleteProjectName').textContent = name;
+            modal.style.display = 'block';
+          });
+        });
+      }
+      
+      // Function to delete a project
+      async function deleteProject(id) {
+        try {
+          const response = await fetch(`/api/projects/deleteProject/${id}`, {
+            method: 'DELETE'
+          });
+          
+          const result = await response.json();
+          
+          if (result.status === 200) {
+            showMessage('Project deleted successfully', 'success');
+            fetchProjects(); // Refresh the list
+          } else {
+            showMessage(result.msg || 'Error deleting project', 'error');
+          }
+        } catch (error) {
+          console.error('Error deleting project:', error);
+          showMessage('Failed to delete project', 'error');
+        }
+      }
+      
+      // Function to show messages
+      function showMessage(message, type = 'info') {
+        // Check if there's already a message
+        let messageElement = document.querySelector('.message');
+        
+        if (!messageElement) {
+          messageElement = document.createElement('div');
+          messageElement.className = 'message';
+          document.querySelector('.admin-main').insertBefore(
+            messageElement,
+            document.querySelector('.admin-header-actions').nextSibling
+          );
+        }
+        
+        // Set the message content and type
+        messageElement.textContent = message;
+        messageElement.className = `message ${type}`;
+        
+        // Show the message
+        messageElement.style.display = 'block';
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+          messageElement.style.display = 'none';
+        }, 3000);
+      }
+    });
+  </script>
+</body>
+</html> 
